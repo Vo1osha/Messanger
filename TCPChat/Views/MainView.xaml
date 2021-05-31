@@ -1,0 +1,131 @@
+﻿<Window x:Class="TCPChat.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TCPChat"
+        xmlns:vm="clr-namespace:TCPChat.ViewModels"
+        mc:Ignorable="d"
+        Title="{Binding Title}" Height="450" Width="800">
+
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="65*"/>
+            <ColumnDefinition Width="35*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="75*"/>
+            <RowDefinition Height="15*"/>
+        </Grid.RowDefinitions>
+
+        <!--Подключение клиента-->
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 5 0 0"
+                    Visibility="{Binding ConnectIsVisible}">
+            <StackPanel Orientation="Horizontal">
+                <TextBox
+                       Text="{Binding Username}"
+                       materialDesign:HintAssist.Hint="Имя"
+                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                       Width="100" Height="40"/>
+                <Button Content="Подкл"
+                    Height="30" Width="100"
+                    Margin="10 10 0 0"
+                    Command="{Binding ConnectCommand}"></Button>
+            </StackPanel>
+            <Label
+                   FontStyle="Oblique"
+                   Foreground="White"
+                   HorizontalAlignment="Left" VerticalAlignment="Center"
+                   Content="username has already been taken"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Margin="15 5 0 0"
+                    Visibility="{Binding WarningVisibility}" HorizontalAlignment="Center">
+            <TextBlock Text="{Binding Username}" Foreground="Gray"/>
+            <TextBlock Text=", " Foreground="Gray"/>
+            <TextBlock Text="{Binding Receiver}" Foreground="Gray" FontWeight="Bold"/>
+            <TextBlock Text=" Получит ваше сообщение" Foreground="Gray"/>
+        </StackPanel>
+
+        <!--Сообщения-->
+        <ListBox Grid.Row="1" Grid.Column="0"
+                 HorizontalAlignment="Center"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ItemsSource="{Binding MessagessItems}"
+                 Margin="0,0,300,0" Grid.ColumnSpan="2">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Focusable" Value="False"/>
+                    <Setter Property="IsEnabled" Value="False"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel Margin="2" LastChildFill="False" Width="450">
+                        <WrapPanel Orientation="Horizontal" DockPanel.Dock="{Binding Align}">
+                            <TextBlock Text="{Binding Sender}"
+                                   FontStyle="{Binding FontStyle}"
+                                   FontWeight="Bold"
+                                   Foreground="{Binding Color}"/>
+                            <TextBlock Text="{Binding Message}" 
+                                   Foreground="{Binding Color}"
+                                   FontStyle="{Binding FontStyle}"
+                                   TextWrapping="WrapWithOverflow"
+                                   />
+                        </WrapPanel>
+                    </DockPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!-- Отправка сообщений -->
+        <StackPanel Grid.Row="2" Grid.Column="0"
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"
+                    Background="#fafafa" Margin="0,10,0,0" 
+                    Width="515" Height="53">
+            <TextBox Width="350" Height="40"
+                     Margin="13 0 0 0"
+                     materialDesign:HintAssist.Hint="Ваше сообщение"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     VerticalAlignment="Center"
+                     IsEnabled="{Binding SendIsEnable}"
+                     Text="{Binding TextMessage}"/>
+            <Button Margin="20 0 0 0"
+                    Width="100" Height="30" 
+                    IsEnabled="{Binding SendIsEnable}"
+                    Command="{Binding SendCommand}"
+                    Content="Отправить"/>
+        </StackPanel>
+
+        <!--Пользователи-->
+        <ListBox Grid.Row="0" Grid.Column="1"
+                 Grid.RowSpan="3"
+                 IsEnabled="{Binding SendIsEnable}"
+                 Width="277"
+                 Background="#D3D3D3"
+                 Foreground="#000000"
+                 HorizontalAlignment="Right"
+                 ItemsSource="{Binding Users}" 
+                 SelectedItem="{Binding SelectedUser}"/>
+        <Button Content="Выкл"
+            Height="Auto"
+            Margin="415,5,0,10"
+            Command="{Binding CloseapplicationCommand}"/>
+
+    </Grid>
+</Window>

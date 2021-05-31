@@ -1,0 +1,17 @@
+﻿<Window x:Class="WpfApp2.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp2"
+        mc:Ignorable="d"
+        Title="Window1" Height="377.459" Width="800">
+    <Grid>
+        <TextBlock Margin="117,37,418,248">Тема</TextBlock>
+        <TextBox Margin="175,26,163,285"></TextBox>
+        <TextBlock Margin="56,182,479,103">Текст</TextBlock>
+        <TextBox Margin="175,147,163,81"></TextBox>
+        <Button Margin="446,287,163,10">Далее</Button>
+        
+    </Grid>
+</Window>
